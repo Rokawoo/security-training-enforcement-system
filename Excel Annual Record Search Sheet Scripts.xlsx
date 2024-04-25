@@ -1,0 +1,205 @@
+' Name:
+=IF(C6 = "", "Awaiting Input", C6)
+
+' Date:
+=TODAY()
+
+' First:
+=LOWER(TRIM(LEFT(TRIM(C6), FIND(" ", TRIM(C6)) - 1)))
+
+' Last:
+=LOWER(TRIM(RIGHT(TRIM(C6), LEN(TRIM(C6)) - FIND(" ", TRIM(C6)))))
+
+' User Found: (OLD)
+=IF(
+    ISNUMBER(
+        MATCH(
+            1,
+            (LOWER(TRIM('Active Employees'!C:C)) = LOWER(TRIM(LEFT(TRIM(C6), FIND(" ", TRIM(C6)) - 1)))) *
+            (LOWER(TRIM('Active Employees'!B:B)) = LOWER(TRIM(RIGHT(TRIM(C6), LEN(TRIM(C6)) - FIND(" ", TRIM(C6))))))
+        )
+    ),
+    "User Found",
+    "User Not Found"
+)
+
+' User Found:
+=IF(ISNUMBER(L14), "User Found", "User Not Found")
+
+' Row Search:
+=IFERROR(
+    MATCH(
+        $I$14 & $J$14,
+        LOWER(TRIM('Active Employees'!C:C)) & LOWER(TRIM('Active Employees'!B:B)),
+        0
+    ),
+    MATCH(
+        $J$14 & $I$14,
+        LOWER(TRIM('Active Employees'!C:C)) & LOWER(TRIM('Active Employees'!B:B)),
+        0
+    )
+)
+
+' Or Function:
+=OR(
+    INDEX('Active Employees'!Z:Z, L14) = "Yes",
+    INDEX('Active Employees'!Z:Z, L14) = "Unknown"
+)
+
+' Sec Aware:
+=IF(
+    INDEX('Active Employees'!Z:Z, L14) = "Yes",
+    IF(
+        ISBLANK(INDEX('Active Employees'!AD:AD, L14)),
+        "No Date Recorded",
+        IF(
+            ISNUMBER(INDEX('Active Employees'!AD:AD, L14)),
+            IFERROR(TEXT(INDEX('Active Employees'!AD:AD, L14), "mm/dd/yyyy"), ""),
+            "Found: " & INDEX('Active Employees'!AD:AD, L14)
+        )
+    ),
+    "Not Required"
+)
+
+' Dod CUI:
+=IF(
+    INDEX('Active Employees'!AF:AF, L14) = "Yes",
+    IF(
+        ISBLANK(INDEX('Active Employees'!AM:AM, L14)),
+        "No Date Recorded",
+        IF(
+            ISNUMBER(INDEX('Active Employees'!AM:AM, L14)),
+            IFERROR(TEXT(INDEX('Active Employees'!AM:AM, L14), "mm/dd/yyyy"), ""),
+            "Found: " & INDEX('Active Employees'!AM:AM, L14)
+        )
+    ),
+    "Not Required"
+)
+
+' Sens Data:
+=IF(
+    INDEX('Active Employees'!AF:AF, L14) = "Yes",
+    IF(
+        ISBLANK(INDEX('Active Employees'!AN:AN, L14)),
+        "No Date Recorded",
+        IF(
+            ISNUMBER(INDEX('Active Employees'!AN:AN, L14)),
+            IFERROR(TEXT(INDEX('Active Employees'!AN:AN, L14), "mm/dd/yyyy"), ""),
+            "Found: " & INDEX('Active Employees'!AN:AN, L14)
+        )
+    ),
+    "Not Required"
+)
+
+' Antiterrorism:
+=IF(
+    INDEX('Active Employees'!AT:AT, L14) = "Yes",
+    IF(
+        ISBLANK(INDEX('Active Employees'!AU:AU, L14)),
+        "No Date Recorded",
+        IF(
+            ISNUMBER(INDEX('Active Employees'!AU:AU, L14)),
+            IFERROR(TEXT(INDEX('Active Employees'!AU:AU, L14), "mm/dd/yyyy"), ""),
+            "Found: " & INDEX('Active Employees'!AU:AU, L14)
+        )
+    ),
+    "Not Required"
+)
+
+' Dod Initial:
+=IF(
+    INDEX('Active Employees'!AV:AV, L14) = "Yes",
+    IF(
+        ISNUMBER(INDEX('Active Employees'!BB:BB, L14)),
+        IF(
+            (K14 - INDEX('Active Employees'!BB:BB, L14)) < 365,
+            "Satisfied by Refresher",
+            TEXT(INDEX('Active Employees'!AX:AX, L14), "mm/dd/yyyy")
+        ),
+        IF(
+            INDEX('Active Employees'!BB:BB, L14) = "",
+            IF(
+                ISNUMBER(INDEX('Active Employees'!AX:AX, L14)),
+                TEXT(INDEX('Active Employees'!AX:AX, L14), "mm/dd/yyyy"),
+                "Found: " & INDEX('Active Employees'!AX:AX, L14)
+            ),
+            "No Date Recorded"
+        )
+    ),
+    "Not Required"
+)
+
+' Dod Annual:
+=IF(
+    K25 = "valid",
+    "Satisfied by Initial Training",
+    IF(
+        INDEX('Active Employees'!AV:AV, L14) = "Yes",
+        LET(
+            dateRecorded,
+            INDEX('Active Employees'!BB:BB, L14),
+            IF(
+                ISBLANK(dateRecorded),
+                "No Date Recorded",
+                IF(
+                    ISNUMBER(dateRecorded),
+                    IFERROR(TEXT(dateRecorded, "mm/dd/yyyy"), ""),
+                    "Found: " & dateRecorded
+                )
+            )
+        ),
+        "Not Required"
+    )
+)
+
+' PII:
+=IF(
+    INDEX('Active Employees'!BC:BC, L14) = "Yes",
+    IF(
+        ISBLANK(INDEX('Active Employees'!BD:BD, L14)),
+        "No Date Recorded",
+        IF(
+            ISNUMBER(INDEX('Active Employees'!BD:BD, L14)),
+            IFERROR(TEXT(INDEX('Active Employees'!BD:BD, L14), "mm/dd/yyyy"), ""),
+            "Found: " & INDEX('Active Employees'!BD:BD, L14)
+        )
+    ),
+    "Not Required"
+)
+
+' Status:
+=IF(
+    H17 = "",
+    "",
+    IF(
+        H17 = "No Date Recorded",
+        "Expired",
+        IF(
+            ISERROR(DATEDIF(H17, $K$14, "y")),
+            "",
+            IF(DATEDIF(H17, $K$14, "y") >= 1, "Expired", "Valid")
+        )
+    )
+)
+
+' Dates:
+=IF(
+    H21 = "",
+    "",
+    IF(
+        LEFT(H21, 5) = "Found",
+        "Review",
+        IF(
+            H21 = "No Date Recorded",
+            "Expired",
+            IFERROR(
+                IF(
+                    DATEDIF(H21, $K$14, "y") < 1,
+                    "Valid",
+                    "Expired"
+                ),
+                ""
+            )
+        )
+    )
+)
