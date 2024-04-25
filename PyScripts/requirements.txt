@@ -1,0 +1,10 @@
+pdfplumber==0.5.28
+datetime
+re
+PyMuPDF==1.19.13
+shutil
+tkinter
+datefinder==0.7.1
+Pillow==8.4.0
+reportlab==3.6.4
+logging
