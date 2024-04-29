@@ -1,6 +1,7 @@
 <div align="center">
   <h1>Security Enforcement System</h1>
   <p>By Rokawoo</p>
+  <img src="https://www.pngplay.com/wp-content/uploads/7/Cybersecurity-No-Background.png" alt="Security Logo" width="150" height="150">
 </div>
 
 > [!CAUTION]
