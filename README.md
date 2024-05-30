@@ -10,7 +10,7 @@
 **What is a Security Enforcement System?**
 A Security Enforcement System is a package of scripts that you can run to log user data, certificate names, and certificate dates. After logging, the data is normalized, categorized, and then distributed to the proper record folder for safekeeping. Additionally, there's a record search function for verifying the existence or status of stored records.
 
-**Demo:**
+**Demo**
 
 [Demo](https://github.com/Rokawoo/security-training-enforcement-system/assets/129356996/93778193-ac08-44a1-91df-63a4412b0e87)
 
